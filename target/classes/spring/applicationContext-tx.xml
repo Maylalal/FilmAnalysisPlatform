@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        
+      <!-- 1. 事务管理器 -->
+	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		 <property name="dataSource" ref="dataSource"/>
+	 </bean>
+     <!-- 2.配置事务的传播性 -->
+     
+     <tx:advice transaction-manager="transactionManager" id="txAdvice">
+	<tx:attributes>
+		<tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+		<tx:method name="test*" propagation="REQUIRED" read-only="false"/>
+		<tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+		<tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+		<tx:method name="find*" propagation="REQUIRED" read-only="false"/>
+	</tx:attributes>
+</tx:advice>
+	<!-- 3. 配置哪些类的哪些方法参与到当前的事务管理这个 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* ssm.*.*(..))"/>
+	</aop:config>
+</beans>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.mapper.ActorMapper">
+  <resultMap id="BaseResultMap" type="ssm.pojo.Actor">
+    <id column="actor_id" jdbcType="INTEGER" property="actorId" />
+    <result column="actor_name" jdbcType="VARCHAR" property="actorName" />
+    <result column="actor_weight" jdbcType="DOUBLE" property="actorWeight" />
+    <result column="movie_count" jdbcType="INTEGER" property="movieCount" />
+    <result column="actor_movie_rank" jdbcType="VARCHAR" property="actorMovieRank" />
+    <result column="all_box" jdbcType="DOUBLE" property="allBox" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    actor_id, actor_name, actor_weight, movie_count, actor_movie_rank, all_box
+  </sql>
+  <select id="selectByExample" parameterType="ssm.pojo.ActorExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from actor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from actor
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from actor
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ssm.pojo.ActorExample">
+    delete from actor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ssm.pojo.Actor">
+    insert into actor (actor_id, actor_name, actor_weight, 
+      movie_count, actor_movie_rank, all_box
+      )
+    values (#{actorId,jdbcType=INTEGER}, #{actorName,jdbcType=VARCHAR}, #{actorWeight,jdbcType=DOUBLE}, 
+      #{movieCount,jdbcType=INTEGER}, #{actorMovieRank,jdbcType=VARCHAR}, #{allBox,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssm.pojo.Actor">
+    insert into actor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="actorId != null">
+        actor_id,
+      </if>
+      <if test="actorName != null">
+        actor_name,
+      </if>
+      <if test="actorWeight != null">
+        actor_weight,
+      </if>
+      <if test="movieCount != null">
+        movie_count,
+      </if>
+      <if test="actorMovieRank != null">
+        actor_movie_rank,
+      </if>
+      <if test="allBox != null">
+        all_box,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="actorId != null">
+        #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="actorName != null">
+        #{actorName,jdbcType=VARCHAR},
+      </if>
+      <if test="actorWeight != null">
+        #{actorWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="movieCount != null">
+        #{movieCount,jdbcType=INTEGER},
+      </if>
+      <if test="actorMovieRank != null">
+        #{actorMovieRank,jdbcType=VARCHAR},
+      </if>
+      <if test="allBox != null">
+        #{allBox,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ssm.pojo.ActorExample" resultType="java.lang.Integer">
+    select count(*) from actor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update actor
+    <set>
+      <if test="record.actorId != null">
+        actor_id = #{record.actorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.actorName != null">
+        actor_name = #{record.actorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actorWeight != null">
+        actor_weight = #{record.actorWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.movieCount != null">
+        movie_count = #{record.movieCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.actorMovieRank != null">
+        actor_movie_rank = #{record.actorMovieRank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allBox != null">
+        all_box = #{record.allBox,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update actor
+    set actor_id = #{record.actorId,jdbcType=INTEGER},
+      actor_name = #{record.actorName,jdbcType=VARCHAR},
+      actor_weight = #{record.actorWeight,jdbcType=DOUBLE},
+      movie_count = #{record.movieCount,jdbcType=INTEGER},
+      actor_movie_rank = #{record.actorMovieRank,jdbcType=VARCHAR},
+      all_box = #{record.allBox,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.pojo.Actor">
+    update actor
+    <set>
+      <if test="actorName != null">
+        actor_name = #{actorName,jdbcType=VARCHAR},
+      </if>
+      <if test="actorWeight != null">
+        actor_weight = #{actorWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="movieCount != null">
+        movie_count = #{movieCount,jdbcType=INTEGER},
+      </if>
+      <if test="actorMovieRank != null">
+        actor_movie_rank = #{actorMovieRank,jdbcType=VARCHAR},
+      </if>
+      <if test="allBox != null">
+        all_box = #{allBox,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="ssm.pojo.Actor">
+    update actor
+    set actor_name = #{actorName,jdbcType=VARCHAR},
+      actor_weight = #{actorWeight,jdbcType=DOUBLE},
+      movie_count = #{movieCount,jdbcType=INTEGER},
+      actor_movie_rank = #{actorMovieRank,jdbcType=VARCHAR},
+      all_box = #{allBox,jdbcType=DOUBLE}
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insertList" parameterType="java.util.List">
+    insert into actor
+    ( actor_id,actor_name,actor_weight,movie_count,actor_movie_rank,all_box)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.actorId}, #{item.actorName}, #{item.actorWeight}, #{item.movieCount},
+      #{item.actorMovieRank},#{item.allBox}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateList" parameterType="java.util.List">
+      UPDATE actor
+      <set>
+        actor_weight=
+        <foreach collection="list" item="bean" index="index" separator=" "
+                 open="case actor_id" close="end">
+        when #{bean.actorId} then
+        #{bean.actorWeight}
+        </foreach>
+      </set>
+  </update>
+
+</mapper>

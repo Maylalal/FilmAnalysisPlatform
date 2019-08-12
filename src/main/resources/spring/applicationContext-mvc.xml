@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 1. 开启对控制器的扫描 -->
+    <context:component-scan base-package="ssm.controller" />
+    <!-- 2. 启动注解开发 -->
+    <mvc:annotation-driven  conversion-service="conversionService"/>
+    <!--2.1配置时间转换器，对应一个实体工具类-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+       <property name="converters">
+           <set>
+               <bean class="ssm.common.DateConvert"></bean>
+           </set>
+       </property>
+    </bean>
+
+    <!-- 3. 视图解析器 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="/" />
+    	<property name="suffix" value=".jsp" />
+    </bean>
+    <!-- 4. 文件上传的配置 -->
+     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	 <property name="maxUploadSize" value="5242880000" />
+    	<property name="maxInMemorySize" value="524288000" />
+    </bean>
+
+
+    <!--对于静态资源的放行-->
+    <!--<mvc:resources mapping="/image/**" location="/image/"></mvc:resources>
+    <mvc:resources mapping="/js/**" location="/js/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/fonts/**" location="/fonts/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/css/**" location="/css/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/content/**" location="/content/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/kindeditor/**" location="/kindeditor/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/administrator/**" location="/WEB-INF/administrator/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/discussManager/**" location="/WEB-INF/discussManager/"></mvc:resources>-->
+    <!--<mvc:resources mapping="/expert/**" location="/WEB-INF/expert/"></mvc:resources>-->
+
+
+</beans>
