@@ -320,7 +320,7 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-scratchpad</artifactId>
-      <version>3.11-beta3</version>
+      <version>5.2.1</version>
     </dependency>
 
     <!--&lt;!&ndash; json &ndash;&gt;-->
